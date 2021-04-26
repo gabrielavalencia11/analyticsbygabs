@@ -1,0 +1,176 @@
+libname gabs "C:\Users\gvalen7\Desktop\Baker Survey.xlsx";
+
+
+proc import
+out = favebaker
+datafile =  "C:\Users\gvalen7\Desktop\Baker Survey New - Copy.xlsx"
+replace;
+sheet = 'Sheet1';
+run;
+
+proc freq data = favebaker;
+tables favorite_baker/norow nocol nocum nopercent missing;
+run;
+
+/*Survey Responses*/
+proc import
+out = xsurvey
+datafile =  "C:\Users\gvalen7\Desktop\Baker Survey New - Copy.xlsx"
+replace;
+sheet = 'Form Responses 1';
+run;
+
+proc freq data = xsurvey;
+tables request_customer_orders/norow nocol nocum nopercent missing;
+run;
+
+proc freq data = xsurvey;
+tables busy_months/norow nocol nocum nopercent missing;
+run;
+
+
+
+data xsurveya;
+set xsurvey;
+length january 3. february 3. march 3. april 3. may 3. june 3. july 3. august 3. september 3. october 3. november 3. december 3.
+	   monday 3. tuesday 3. wednesday 3. thursday 3. friday 3. saturday 3. sunday 3.;
+run;
+
+%macro busymonth (input, file, month, month2);
+
+data xsurvey&file;
+set xsurvey&input;
+if busy_months1 = &month then &month2 = 1;
+if busy_months2 = &month then &month2 = 1;
+if busy_months3 = &month then &month2 = 1;
+if busy_months4 = &month then &month2 = 1;
+if busy_months5 = &month then &month2 = 1;
+if busy_months6 = &month then &month2 = 1;
+if busy_months7 = &month then &month2 = 1;
+if busy_months8 = &month then &month2 = 1;
+if busy_months9 = &month then &month2 = 1;
+if busy_months10 = &month then &month2 = 1;
+if busy_months11 = &month then &month2 = 1;
+if busy_months12 = &month then &month2 = 1;
+run;
+
+
+%mend;
+%busymonth (a, 1, 'January', january);
+%busymonth (1, 2, 'February', february);
+%busymonth (2, 3, 'March', march);
+%busymonth (3, 4, 'April', april);
+%busymonth (4, 5, 'May', may);
+%busymonth (5, 6, 'June', june);
+%busymonth (6, 7, 'July', july);
+%busymonth (7, 8, 'August', august);
+%busymonth (8, 9, 'September', september);
+%busymonth (9, 10,'October', october);
+%busymonth (10, 11,'November', november);
+%busymonth (11, final,'December', december);
+
+
+
+%macro busyday (input, file, day, day2);
+
+data xsurvey&file;
+set xsurvey&input;
+if request_1 = &day then &day2 = 1;
+if request_2 = &day then &day2 = 1;
+if request_3 = &day then &day2 = 1;
+if request_4 = &day then &day2 = 1;
+if request_5 = &day then &day2 = 1;
+if request_6 = &day then &day2 = 1;
+if request_7 = &day then &day2 = 1;
+run;
+
+
+%mend;
+%busyday (final, a, 'Monday', monday);
+%busyday (a, b, 'Tuesday', tuesday);
+%busyday (b, c, 'Wednesday', wednesday);
+%busyday (c, d, 'Thursday', thursday);
+%busyday (d, e, 'Friday', friday);
+%busyday (e, f, 'Saturday', saturday);
+%busyday (f, finale, 'Sunday', sunday);
+
+
+
+
+
+
+%macro dessert (input, file, des, des2);
+
+data xsurvey&file;
+set xsurvey&input;
+if desserts_sell1 = &des then &des2 = 1;
+if desserts_sell2 = &des then &des2 = 1;
+if desserts_sell3 = &des then &des2 = 1;
+if desserts_sell4= &des then &des2 = 1;
+if desserts_sell5 = &des then &des2 = 1;
+if desserts_sell6 = &des then &des2 = 1;
+if desserts_sell7 = &des then &des2 = 1;
+if desserts_sell8 = &des then &des2 = 1;
+if desserts_sell9 = &des then &des2 = 1;
+if desserts_sell10 = &des then &des2 = 1;
+if desserts_sell11 = &des then &des2 = 1;
+if desserts_sell12 = &des then &des2 = 1;
+if desserts_sell13 = &des then &des2 = 1;
+if desserts_sell14 = &des then &des2 = 1;
+if desserts_sell15 = &des then &des2 = 1;
+if desserts_sell16 = &des then &des2 = 1;
+if desserts_sell17 = &des then &des2 = 1;
+if desserts_sell18 = &des then &des2 = 1;
+if desserts_sell19 = &des then &des2 = 1;
+if desserts_sell20 = &des then &des2 = 1;
+if desserts_sell21 = &des then &des2 = 1;
+if desserts_sell22 = &des then &des2 = 1;
+if desserts_sell23 = &des then &des2 = 1;
+if desserts_sell24 = &des then &des2 = 1;
+run;
+
+
+%mend;
+%dessert (finale, a1, 'Chocolate covered strawberries (in boxes boxes)', strawberries_box);
+%dessert (a1, b1, 'Breakable heart', breakable_heart);
+%dessert (b1, c1, 'Cakes (circle cakes, square, rectangular)', cakes_regular);
+%dessert (c1, d1, 'Cheesecakes', cheesecakes);
+%dessert (d1, e1, 'Decorated sugar cookies', decorated_sugar_cookies);
+%dessert (e1, f1, 'Other cookies (chocolate chip, peanut butter cookies, etc.)', other_cookies);
+%dessert (f1, g1, 'Chocolate covered Oreos', oreos);
+%dessert (g1, h1, 'Chocolate covered Rice Krispies', rice_krispies);
+%dessert (h1, i1, 'Chocolate covered strawberry bouquets (with flowers)', strawberries_bouquets);
+%dessert (i1, j1, 'Churro Cheesecake', churro_cheesecake);
+%dessert (j1, k1, 'Hot cocoa bombs', cocoa_bombs);
+%dessert (k1, l1, 'Number cakes (cakes shaped in numbers)', number_cakes);
+%dessert (l1, m1, 'Cake pops', cakepops);
+%dessert (m1, n1, 'Chocolate covered strawberry tower', strawberry_tower);
+%dessert (n1, o1, 'Chocolate covered pretzels', pretzels);
+%dessert (o1, p1, 'Cakesicles', cakesicles);
+%dessert (p1, q1, 'Caramel apples (covered in just caramel or other toppings such as peanuts and/or chocolate)', caramel_apples);
+%dessert (q1, r1, 'Edible images', edible_images);
+%dessert (r1, s1, 'pies', other);
+%dessert (s1, t1, 'Tajin Apples', tajin_apples);
+%dessert (t1, u1, 'Spicy gummies', spicy_gummies);
+%dessert (u1, v1, 'Pies', other);
+%dessert (v1, w1, 'Cookie kits', other);
+%dessert (w1, x1, 'Tea bombs', other);
+%dessert (x1, y1, 'Cupcakes', other);
+%dessert (y1, z1, 'Other', other);
+%dessert (z1, a2, 'Bread', other);
+%dessert (a2, b2, 'Flan/chocoflan ', other);
+%dessert (b2, finale_v2, 'Other beverages such as lemonades, horchata, other aguas, coffee etc.', beverages);
+
+
+
+
+proc export
+	data = xsurveyfinale_v2
+	dbms = xlsx
+	outfile = "C:\Users\gvalen7\Desktop\Final_Survey.xlsx"
+	replace;
+run;
+
+
+
+
